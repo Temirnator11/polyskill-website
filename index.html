@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolySkill - Изучайте языки эффективно</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-login, .btn-signup {
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login {
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-signup {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-login:hover, .btn-signup:hover {
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,107,107,0.4);
+        }
+
+        .features-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            text-align: center;
+            color: white;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .feature-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .language-selector {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .language-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 15px 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .language-btn:hover, .language-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .skill-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .skill-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            color: #333;
+        }
+
+        .skill-description {
+            color: #666;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .start-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .stats-panel {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer {
+            background: rgba(0,0,0,0.2);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            width: 90%;
+            margin: 50px auto;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🌍 PolySkill</a>
+            <ul class="nav-links">
+                <li><a href="#features">Возможности</a></li>
+                <li><a href="#languages">Языки</a></li>
+                <li><a href="#pricing">Цены</a></li>
+                <li><a href="#about">О нас</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="#" class="btn-login">Войти</a>
+                <a href="#" class="btn-signup">Регистрация</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Героический раздел -->
+        <section class="hero-section">
+            <h1>Изучайте языки эффективно</h1>
+            <p>Развивайте все четыре навыка: Listening, Reading, Speaking и Writing с помощью интерактивных упражнений и ИИ-ассистента</p>
+            <a href="#languages" class="cta-button">Начать изучение бесплатно</a>
+        </section>
+
+        <!-- Особенности -->
+        <section class="features-section" id="features">
+            <h2 style="text-align: center; color: white; font-size: 2.5rem; margin-bottom: 20px;">Почему PolySkill?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">4 в 1</h3>
+                    <p class="feature-description">Развивайте все языковые навыки в одном месте: аудирование, чтение, говорение и письмо</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">ИИ-ассистент</h3>
+                    <p class="feature-description">Персональный преподаватель, который адаптируется под ваш уровень и темп обучения</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Детальная аналитика</h3>
+                    <p class="feature-description">Отслеживайте прогресс, выявляйте слабые места и получайте персональные рекомендации</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">15+ языков</h3>
+                    <p class="feature-description">От английского до китайского - выберите любой язык и начните изучение уже сегодня</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Выбор языка -->
+        <section class="language-selector" id="languages">
+            <h3 style="color: white; margin-bottom: 15px; font-size: 2rem;">Выберите язык для изучения</h3>
+            <div class="language-grid">
+                <button class="language-btn active" data-lang="en">🇺🇸 English</button>
+                <button class="language-btn" data-lang="es">🇪🇸 Español</button>
+                <button class="language-btn" data-lang="fr">🇫🇷 Français</button>
+                <button class="language-btn" data-lang="de">🇩🇪 Deutsch</button>
+                <button class="language-btn" data-lang="it">🇮🇹 Italiano</button>
+                <button class="language-btn" data-lang="pt">🇧🇷 Português</button>
+                <button class="language-btn" data-lang="zh">🇨🇳 中文</button>
+                <button class="language-btn" data-lang="ja">🇯🇵 日本語</button>
+                <button class="language-btn" data-lang="ko">🇰🇷 한국어</button>
+                <button class="language-btn" data-lang="ar">🇸🇦 العربية</button>
+                <button class="language-btn" data-lang="hi">🇮🇳 हिन्दी</button>
+                <button class="language-btn" data-lang="ru">🇷🇺 Русский</button>
+            </div>
+        </section>
+
+        <!-- Навыки -->
+        <div class="skills-grid">
+            <div class="skill-card" data-skill="listening">
+                <div class="skill-icon">🎧</div>
+                <h3 class="skill-title">Listening</h3>
+                <p class="skill-description">Улучшайте понимание речи на слух через подкасты, диалоги и аудиозадания с методикой dailydictation</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <div class="progress-text">Уровень: Intermediate (65%)</div>
+                <button class="start-btn" onclick="openSkillModal('listening')">Начать урок</button>
+            </div>
+
+            <div class="skill-card" data-skill="reading">
+                <div class="skill-icon">📖</div>
+                <h3 class="skill-title">Reading</h3>
+                <p class="skill-description">Читайте тексты разной сложности и развивайте навыки понимания через интерактивные упражнения</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+                <div class="progress-text">Уровень: Pre-Intermediate (45%)</div>
+                <button class="start-btn" onclick="openSkillModal('reading')">Начать урок</button>
+            </div>
+
+            <div class="skill-card" data-skill="speaking">
+                <div class="skill-icon">🎤</div>
+                <h3 class="skill-title">Speaking</h3>
+                <p class="skill-description">Практикуйте произношение и разговорную речь с ИИ-ассистентом и получайте мгновенную обратную связь</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%"></div>
+                </div>
+                <div class="progress-text">Уровень: Elementary (30%)</div>
+                <button class="start-btn" onclick="openSkillModal('speaking')">Начать урок</button>
+            </div>
+
+            <div class="skill-card" data-skill="writing">
+                <div class="skill-icon">✍️</div>
+                <h3 class="skill-title">Writing</h3>
+                <p class="skill-description">Пишите эссе, письма и получайте детальную обратную связь по грамматике и стилю</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 55%"></div>
+                </div>
+                <div class="progress-text">Уровень: Intermediate (55%)</div>
+                <button class="start-btn" onclick="openSkillModal('writing')">Начать урок</button>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-panel">
+            <h3 style="color: white; margin-bottom: 10px; font-size: 2rem;">📊 Ваши достижения</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">28</span>
+                    <span class="stat-label">дней подряд</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">156</span>
+                    <span class="stat-label">уроков пройдено</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2,340</span>
+                    <span class="stat-label">слов изучено</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">45</span>
+                    <span class="stat-label">часов практики</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">О компании</a>
+                <a href="#">Блог</a>
+                <a href="#">Карьера</a>
+                <a href="#">Поддержка</a>
+                <a href="#">Условия использования</a>
+                <a href="#">Конфиденциальность</a>
+            </div>
+            <p>&copy; 2024 PolySkill. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="skillModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div id="modalContent">
+                <!-- Содержимое урока будет загружаться здесь -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Обработка выбора языка
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Анимация смены языка
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        });
+
+        // Открытие модального окна с уроком
+        function openSkillModal(skill) {
+            const modal = document.getElementById('skillModal');
+            const content = document.getElementById('modalContent');
+            
+            const skillContent = {
+                listening: `
+                    <h2>🎧 Урок Listening</h2>
+                    <p>Послушайте аудио и выполните задания в стиле dailydictation:</p>
+                    <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                        <div style="width: 60px; height: 60px; background: #667eea; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin-bottom: 10px;">▶️</div>
+                        <h4>Урок 42: "Planning a Weekend Trip"</h4>
+                        <p style="color: #666; margin: 10px 0;">Длительность: 1:30 | Уровень: Intermediate</p>
+                        <p><strong>Шаги:</strong> Слушаем → Печатаем → Проверяем → Читаем вслух</p>
+                    </div>
+                    <button class="start-btn">Начать диктант</button>
+                `,
+                reading: `
+                    <h2>📖 Урок Reading</h2>
+                    <p>Прочитайте текст и выполните задания на понимание:</p>
+                    <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>The Future of Remote Work</h4>
+                        <p style="line-height: 1.6; margin-bottom: 15px;">The pandemic has fundamentally changed how we think about work. Remote work, once considered a luxury, has become the new normal for millions of professionals worldwide...</p>
+                        <div style="color: #666; font-size: 0.9rem;">
+                            <p>📊 Уровень: Intermediate | ⏱️ Время чтения: ~7 мин</p>
+                            <p>🎯 Задания: 8 вопросов на понимание + словарь</p>
+                        </div>
+                    </div>
+                    <button class="start-btn">Читать полный текст</button>
+                `,
+                speaking: `
+                    <h2>🎤 Урок Speaking</h2>
+                    <p>Практикуйте произношение с ИИ-ассистентом:</p>
+                    <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>Диалог: "Job Interview Practice"</h4>
+                        <p style="margin-bottom: 15px;">Вы проходите собеседование на работу. Отвечайте на вопросы интервьюера уверенно и профессионально.</p>
+                        <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
+                            <p><strong>🤖 ИИ:</strong> "Tell me about yourself and why you're interested in this position."</p>
+                        </div>
+                        <div style="text-align: center; margin: 15px 0;">
+                            <div style="width: 60px; height: 60px; background: #dc3545; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 20px;">🎙️</div>
+                            <p style="color: #666; margin-top: 8px;">Нажмите для записи ответа</p>
+                        </div>
+                    </div>
+                    <button class="start-btn">Начать диалог</button>
+                `,
+                writing: `
+                    <h2>✍️ Урок Writing</h2>
+                    <p>Напишите эссе и получите детальную обратную связь:</p>
+                    <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>Тема: "The Impact of Social Media on Modern Communication"</h4>
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #ffc107;">
+                            <p><strong>Требования:</strong></p>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>250-300 слов</li>
+                                <li>Введение, основная часть, заключение</li>
+                                <li>Используйте linking words</li>
+                                <li>Приведите примеры</li>
+                            </ul>
+                        </div>
+                        <textarea style="width: 100%; height: 150px; border: 1px solid #ddd; border-radius: 5px; padding: 15px; font-size: 14px; resize: vertical;" placeholder="Начните писать ваше эссе здесь..."></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.9rem; color: #666;">
+                            <span>💡 ИИ проверит грамматику, структуру и стиль</span>
+                            <span id="wordCount">Слов: 0</span>
+                        </div>
+                    </div>
+                    <button class="start-btn">Проверить эссе</button>
+                `
+            };
+            
+            content.innerHTML = skillContent[skill];
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('skillModal').style.display = 'none';
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('skillModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Плавная прокрутка для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Анимация при загрузке страницы
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.skill-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 150);
+          
